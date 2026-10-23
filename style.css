@@ -211,6 +211,12 @@ body {
 .chip-hit { color: var(--accent-dk); background: var(--accent-bg); border-color: var(--accent); }
 .empty { text-align: center; color: var(--muted); padding: 60px 0; line-height: 1.7; }
 .empty-icon { font-size: 34px; color: var(--rose); margin-bottom: 10px; }
+.empty-link {
+  color: var(--accent-dk); font-weight: 700; text-decoration: none;
+  border-bottom: 1.5px dashed var(--accent); cursor: pointer;
+  transition: color .18s ease, border-color .18s ease;
+}
+.empty-link:hover { color: var(--accent); border-bottom-color: var(--rose); }
 
 /* ----- Кнопки ----- */
 .btn {
