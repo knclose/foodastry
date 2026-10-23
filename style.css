@@ -1,0 +1,447 @@
+/* ===== Кулинарная книга — спокойная пастельная тема ===== */
+
+/* Локальные шрифты (папка fonts рядом с сайтом). 
+   Nunito — округлый тёплый текст, Lora — мягкая антиква для заголовков и цифр. */
+@font-face {
+  font-family: 'Nunito'; font-weight: 400; font-style: normal; font-display: swap;
+  src: url('nunito-cyrillic-400.woff2') format('woff2');
+  unicode-range: U+0301, U+0400-04FF, U+2116, U+2DE0-2DFF, U+A640-A69F;
+}
+@font-face {
+  font-family: 'Nunito'; font-weight: 400; font-style: normal; font-display: swap;
+  src: url('nunito-latin-400.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+2000-206F, U+2190-2199, U+2212;
+}
+@font-face {
+  font-family: 'Nunito'; font-weight: 700; font-style: normal; font-display: swap;
+  src: url('nunito-cyrillic-700.woff2') format('woff2');
+  unicode-range: U+0301, U+0400-04FF, U+2116, U+2DE0-2DFF, U+A640-A69F;
+}
+@font-face {
+  font-family: 'Nunito'; font-weight: 700; font-style: normal; font-display: swap;
+  src: url('nunito-latin-700.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+2000-206F, U+2190-2199, U+2212;
+}
+@font-face {
+  font-family: 'Lora'; font-weight: 600; font-style: normal; font-display: swap;
+  src: url('lora-cyrillic-600.woff2') format('woff2');
+  unicode-range: U+0301, U+0400-04FF, U+2116, U+2DE0-2DFF, U+A640-A69F;
+}
+@font-face {
+  font-family: 'Lora'; font-weight: 600; font-style: normal; font-display: swap;
+  src: url('lora-latin-600.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+2000-206F, U+2190-2199, U+2212;
+}
+
+:root {
+  --font-ui: 'Nunito', 'Segoe UI', system-ui, sans-serif;          /* основной текст */
+  --font-serif: 'Lora', Georgia, 'Times New Roman', serif;        /* заголовки и крупные цифры */
+  --bg:        #f5f1ea;   /* тёплый кремовый фон */
+  --card:      #fdfbf7;   /* карточки */
+  --card-2:    #f8f4ed;   /* поля, вложенные блоки */
+  --ink:       #4b463f;   /* основной текст */
+  --muted:     #8d8577;   /* вторичный текст */
+  --line:      #e7e0d4;   /* границы */
+  --accent:    #9caf88;   /* шалфейно-зелёный */
+  --accent-dk: #7d9270;
+  --accent-bg: #edf1e7;   /* нежно-зелёная подложка */
+  --rose:      #d8a7a0;   /* пыльная роза */
+  --rose-bg:   #f3e6e3;
+  --shadow:    0 2px 12px rgba(96, 85, 62, .08);
+  --shadow-lg: 0 6px 24px rgba(96, 85, 62, .10);
+  --radius:    14px;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { -webkit-text-size-adjust: 100%; scrollbar-gutter: stable; }
+
+body {
+  font-family: var(--font-ui);
+  line-height: 1.55;
+  background: var(--bg);
+  background-image:
+    radial-gradient(circle at 12% 8%,  rgba(156,175,136,.07) 0, transparent 34%),
+    radial-gradient(circle at 88% 4%,  rgba(216,167,160,.07) 0, transparent 30%);
+  background-attachment: fixed;
+  color: var(--ink);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ----- Шапка ----- */
+.topbar {
+  position: sticky; top: 0; z-index: 10;
+  background: rgba(253, 251, 247, .92);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid var(--line);
+}
+.topbar-inner {
+  max-width: 1080px; margin: 0 auto; padding: 14px 20px;
+  display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap;
+}
+.brand { display: flex; align-items: center; gap: 10px; cursor: pointer; border: none; background: none; font: inherit; text-align: left; padding: 2px 8px; margin-left: -8px; border-radius: 10px; transition: background .18s ease; }
+.brand:hover { background: rgba(156, 175, 136, .12); }
+.brand:active { transform: translateY(1px); }
+.brand-mark { color: var(--accent); font-size: 22px; }
+.brand h1 {
+  font-family: var(--font-serif);
+  font-weight: normal; font-size: 22px; letter-spacing: .5px; color: var(--ink);
+}
+.nav { display: flex; gap: 8px; flex-wrap: wrap; }
+.nav-btn {
+  font: inherit; font-size: 14px; padding: 8px 16px;
+  border: 1px solid var(--line); border-radius: 999px;
+  background: var(--card); color: var(--muted); cursor: pointer;
+  transition: all .18s ease;
+}
+.nav-btn:hover { border-color: var(--accent); color: var(--ink); }
+.nav-btn.active { background: var(--accent); border-color: var(--accent); color: #fff; }
+
+/* ----- Контейнер ----- */
+.container { max-width: 1080px; width: 100%; margin: 0 auto; padding: 24px 20px 40px; flex: 1; }
+
+/* ----- Карточки ----- */
+.card {
+  background: var(--card); border: 1px solid var(--line);
+  border-radius: var(--radius); box-shadow: var(--shadow);
+  padding: 22px;
+}
+
+/* ----- Поиск ----- */
+.search-card { padding: 18px 20px; margin-bottom: 22px; }
+.mode-switch { display: inline-flex; background: var(--card-2); border-radius: 999px; padding: 4px; margin-bottom: 14px; }
+.mode-btn {
+  font: inherit; font-size: 14px; padding: 7px 18px; border: none; border-radius: 999px;
+  background: transparent; color: var(--muted); cursor: pointer; transition: all .18s ease;
+}
+.mode-btn.active { background: var(--card); color: var(--ink); box-shadow: var(--shadow); }
+.search-input-row { display: flex; align-items: center; gap: 10px; }
+.search-input-row input {
+  flex: 1; min-width: 0; font: inherit; font-size: 15px; padding: 10px 14px;
+  border: 1px solid var(--line); border-radius: 10px; background: var(--card-2); color: var(--ink);
+  outline: none; transition: border-color .18s ease, background .18s ease, box-shadow .18s ease;
+}
+.search-input-row input::placeholder { color: var(--muted); }
+.search-input-row input:hover { border-color: var(--accent); }
+.search-input-row input:focus {
+  border-color: var(--accent); background: #fff;
+  box-shadow: 0 0 0 3px var(--accent-bg);
+}
+.hint { margin-top: 10px; font-size: 13px; color: var(--muted); }
+
+/* ----- Дашборд ----- */
+.dash-hero {
+  display: flex; justify-content: space-between; align-items: flex-end; gap: 16px;
+  margin: 6px 0 18px; flex-wrap: wrap;
+}
+.dash-title { font-family: var(--font-serif); font-weight: normal; font-size: 30px; color: var(--ink); }
+.dash-sub { color: var(--muted); margin-top: 6px; font-size: 14px; }
+
+.dash-stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 18px; }
+.dash-stat {
+  background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 14px 16px;
+  box-shadow: var(--shadow);
+}
+.dash-stat .st-top { display: flex; align-items: center; gap: 7px; }
+.dash-stat .st-icon { font-size: 15px; }
+.dash-stat .st-label {
+  font-size: 11.5px; letter-spacing: .5px; color: var(--muted); text-transform: uppercase;
+}
+.dash-stat .st-value {
+  font-family: var(--font-serif); font-size: 26px; color: var(--ink); margin-top: 5px; line-height: 1.1;
+}
+
+.dash-cols { display: grid; grid-template-columns: 1.15fr 1fr; gap: 12px; align-items: start; }
+.dash-t { margin: 2px 0 12px; }
+
+.dash-day-recipe { padding: 14px 16px; background: var(--accent-bg); border: 1px solid var(--line); border-radius: var(--radius); cursor: pointer; transition: box-shadow .18s ease, transform .18s ease; }
+.dash-day-recipe:hover { box-shadow: var(--shadow-lg); transform: translateY(-1px); }
+.dash-day-recipe h4 { font-family: var(--font-serif); font-weight: normal; font-size: 20px; color: var(--ink); margin-bottom: 8px; }
+.dash-day-kcal { font-size: 13.5px; color: var(--muted); }
+.dash-day-kcal b { color: var(--accent-dk); font-weight: 600; }
+.dash-day-desc { font-size: 13.5px; color: var(--muted); margin-top: 8px; line-height: 1.5; }
+.dash-day-hint { display: block; margin-top: 12px; font-size: 12px; color: var(--accent-dk); }
+
+.dash-panel-foot { margin-top: 14px; font-size: 13.5px; }
+.dash-panel-foot a { color: var(--accent-dk); text-decoration: none; border-bottom: 1px dashed var(--accent); }
+.dash-panel-foot a:hover { color: var(--ink); }
+
+.dash-recent-row {
+  display: flex; justify-content: space-between; align-items: center; gap: 10px;
+  padding: 9px 10px; border-radius: 10px; cursor: pointer; transition: background .15s ease;
+}
+.dash-recent-row:hover { background: var(--accent-bg); }
+.dash-recent-row + .dash-recent-row { margin-top: 2px; }
+.dash-recent-row .dr-name { font-size: 14.5px; color: var(--ink); min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.dash-recent-row .dr-kcal { font-size: 12.5px; color: var(--muted); white-space: nowrap; }
+
+.dash-empty-line { color: var(--muted); font-size: 14px; line-height: 1.55; margin-bottom: 12px; }
+
+@media (max-width: 760px) {
+  .dash-stats { grid-template-columns: repeat(2, 1fr); }
+  .dash-cols { grid-template-columns: 1fr; }
+  .dash-hero { align-items: flex-start; flex-direction: column; }
+}
+
+/* ----- Список рецептов ----- */
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(255px, 1fr)); gap: 16px; }
+.recipe-card {
+  background: var(--card); border: 1px solid var(--line); border-radius: var(--radius);
+  box-shadow: var(--shadow); padding: 18px; cursor: pointer;
+  display: flex; flex-direction: column; gap: 10px;
+  transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease;
+}
+.recipe-card:hover { transform: translateY(-2px); box-shadow: var(--shadow-lg); border-color: var(--accent); }
+.recipe-card h3 {
+  font-family: var(--font-serif); font-weight: normal;
+  font-size: 19px; color: var(--ink); line-height: 1.3;
+}
+.recipe-desc { font-size: 13.5px; color: var(--muted); line-height: 1.45; }
+.kbju-chip {
+  display: inline-block; font-size: 12.5px; color: var(--accent-dk);
+  background: var(--accent-bg); border-radius: 999px; padding: 4px 12px; align-self: flex-start;
+}
+.chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.chip {
+  font-size: 12px; color: var(--muted); background: var(--card-2);
+  border: 1px solid var(--line); border-radius: 999px; padding: 3px 10px;
+}
+.chip-hit { color: var(--accent-dk); background: var(--accent-bg); border-color: var(--accent); }
+.empty { text-align: center; color: var(--muted); padding: 60px 0; line-height: 1.7; }
+.empty-icon { font-size: 34px; color: var(--rose); margin-bottom: 10px; }
+
+/* ----- Кнопки ----- */
+.btn {
+  font: inherit; font-size: 15px; padding: 10px 20px; border-radius: 10px; cursor: pointer;
+  border: 1px solid var(--line); background: var(--card); color: var(--ink);
+  transition: all .18s ease;
+}
+.btn.primary { background: var(--accent); border-color: var(--accent); color: #fff; }
+.btn.primary:hover { background: var(--accent-dk); }
+.btn.ghost { background: transparent; }
+.btn.ghost:hover { border-color: var(--accent); color: var(--accent-dk); }
+.btn.danger { background: var(--rose-bg); border-color: var(--rose); color: #a3665e; }
+.btn.danger:hover { background: var(--rose); color: #fff; }
+.btn.small { font-size: 13px; padding: 6px 14px; border-radius: 10px; }
+
+/* ----- Редактор ----- */
+.sub-title {
+  font-family: var(--font-serif); font-weight: normal; font-size: 16px;
+  margin: 14px 0 8px; color: var(--ink);
+}
+.field { margin-bottom: 10px; }
+.field label { display: block; font-size: 13px; color: var(--muted); margin-bottom: 5px; }
+.field input, .field textarea, textarea#rSteps {
+  width: 100%; font: inherit; font-size: 15px; padding: 10px 12px;
+  border: 1px solid var(--line); border-radius: 10px; background: var(--card-2);
+  color: var(--ink); outline: none; resize: vertical;
+  transition: border-color .18s ease, background .18s ease;
+}
+.field input:focus, .field textarea:focus, textarea#rSteps:focus { border-color: var(--accent); background: #fff; }
+
+.ing-head {
+  display: grid; grid-template-columns: 1fr 88px 96px 130px 34px;
+  gap: 8px; font-size: 12px; color: var(--muted); margin-bottom: 6px; padding: 0 2px;
+}
+.ing-row { position: relative; }
+.ing-line {
+  display: grid; grid-template-columns: 1fr 88px 96px 130px 34px;
+  gap: 8px; align-items: center; margin-bottom: 8px;
+}
+.ing-line input, .ing-line select {
+  font: inherit; font-size: 14px; padding: 8px 10px;
+  border: 1px solid var(--line); border-radius: 10px; background: var(--card-2);
+  color: var(--ink); outline: none; width: 100%; min-width: 0;
+}
+.ing-line input:focus, .ing-line select:focus { border-color: var(--accent); background: #fff; }
+.ing-sum { font-size: 12.5px; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.ing-sum b { color: var(--accent-dk); font-weight: 600; }
+.ing-remove {
+  font-size: 15px; border: none; background: none; color: var(--muted);
+  cursor: pointer; padding: 6px; border-radius: 10px;
+}
+.ing-remove:hover { color: #a3665e; background: var(--rose-bg); }
+
+/* ----- Справочник ингредиентов ----- */
+.foods-head { display: flex; align-items: center; gap: 10px; }
+.foods-head .grow { flex: 1; min-width: 0; }
+.foods-head .no-shrink { flex-shrink: 0; }
+.food-form { max-width: 560px; }
+.food-grid {
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 10px;
+}
+.food-grid label { font-size: 11.5px; color: var(--muted); display: block; margin-bottom: 4px; }
+.food-grid input {
+  width: 100%; font: inherit; font-size: 13px; padding: 6px 9px;
+  border: 1px solid var(--line); border-radius: 10px; background: var(--card-2); color: var(--ink); outline: none;
+  transition: border-color .18s ease, background .18s ease;
+}
+.food-grid input:focus { border-color: var(--accent); background: #fff; }
+.food-grid-list {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 10px;
+}
+.food-item {
+  background: var(--card-2); border: 1px solid var(--line); border-radius: var(--radius);
+  padding: 10px 12px; display: flex; align-items: center; gap: 10px;
+}
+.food-item .fi-name { flex: 1; min-width: 0; color: var(--ink); font-size: 14px; }
+.food-item .fi-name .fi-badge {
+  display: inline-block; margin-left: 6px; font-size: 10.5px; padding: 1px 7px; border-radius: 999px;
+  background: var(--accent-bg); color: var(--accent-dk); vertical-align: 1px; white-space: nowrap;
+}
+.food-item .fi-kbju { font-size: 12px; color: var(--muted); white-space: nowrap; }
+.food-item .fi-actions { display: flex; gap: 4px; }
+.food-item.item-hidden { opacity: .55; }
+.food-item.item-hidden .fi-name { text-decoration: line-through; }
+
+.suggest-list {
+  position: absolute; z-index: 20; top: calc(100% - 6px); left: 0; right: 0;
+  background: #fff; border: 1px solid var(--line); border-radius: 10px;
+  box-shadow: var(--shadow-lg); max-height: 230px; overflow-y: auto;
+}
+.suggest-item {
+  padding: 8px 12px; font-size: 14px; cursor: pointer; color: var(--ink);
+}
+.suggest-item:hover, .suggest-item.hl { background: var(--accent-bg); }
+.suggest-item .sug-val { color: var(--muted); font-size: 12px; margin-left: 8px; }
+.suggest-item.sug-add { color: var(--accent-dk); }
+
+/* мобильная версия: карточки ингредиентов в одну колонку */
+@media (max-width: 640px) {
+  .food-grid-list { grid-template-columns: 1fr; }
+  .food-item { flex-wrap: wrap; }
+}
+
+.add-ing { margin-top: 4px; width: 100%; }
+
+.servings-row {
+  display: flex; align-items: center; gap: 10px; margin-top: 10px; color: var(--muted); font-size: 14px;
+}
+.servings-row input {
+  width: 90px; font: inherit; padding: 8px 10px; border: 1px solid var(--line);
+  border-radius: 10px; background: var(--card-2); outline: none;
+}
+.editor-actions { display: flex; gap: 10px; margin-top: 14px; }
+.error-text { margin-top: 12px; color: #a3665e; font-size: 14px; }
+
+/* ===== Экран настройки облака ===== */
+.setup-card { max-width: 560px; margin: 10vh auto 0; text-align: left; }
+.setup-card .sub-title { margin-top: 4px; }
+.setup-steps { margin: 14px 0 0; padding-left: 22px; color: var(--ink); }
+.setup-steps li { margin: 9px 0; line-height: 1.5; }
+.setup-card .hint { margin-top: 16px; }
+
+
+/* ----- Просмотр рецепта ----- */
+.recipe-view { max-width: 760px; margin: 0 auto; }
+.recipe-back { margin-bottom: 16px; }
+.recipe-view h2 {
+  font-family: var(--font-serif); font-weight: normal; font-size: 30px;
+  color: var(--ink); margin-bottom: 6px; line-height: 1.25;
+}
+.recipe-meta { color: var(--muted); font-size: 14px; margin-bottom: 18px; }
+.recipe-view .desc { color: var(--muted); font-size: 15px; line-height: 1.6; margin-bottom: 20px; }
+
+.kbju-panels { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin-bottom: 24px; }
+.kbju-box {
+  background: var(--accent-bg); border: 1px solid var(--line); border-radius: var(--radius); padding: 14px 16px;
+}
+.kbju-box h4 { font-size: 12px; font-weight: 600; color: var(--muted); margin-bottom: 8px; letter-spacing: .4px; }
+.kbju-box .kcal { font-size: 26px; color: var(--ink); font-family: var(--font-serif); }
+.kbju-box .kpfc { font-size: 13px; color: var(--muted); margin-top: 6px; line-height: 1.5; }
+.kbju-box.rose { background: var(--rose-bg); }
+
+.rv-table { width: 100%; border-collapse: collapse; font-size: 14.5px; }
+.rv-table th {
+  text-align: left; font-weight: 600; font-size: 12px; color: var(--muted);
+  padding: 8px 10px; border-bottom: 1px solid var(--line); letter-spacing: .4px;
+}
+.rv-table td { padding: 9px 10px; border-bottom: 1px solid var(--line); }
+.rv-table tr:last-child td { border-bottom: none; }
+.rv-table td.num { white-space: nowrap; color: var(--muted); }
+.rv-table td.cell-name, .rv-table th.cell-name { width: 42%; }
+.rv-table td.cell-nut { font-size: 12px; color: var(--muted); }
+
+.steps { margin: 8px 0 0; padding-left: 22px; line-height: 1.75; font-size: 15px; }
+.steps li { margin-bottom: 8px; }
+.rv-actions { display: flex; gap: 10px; margin-top: 26px; }
+
+/* ----- Редактор ----- */
+@media (max-width: 640px) {
+  .ing-head { display: none; }
+  .ing-line {
+    grid-template-columns: 1fr 70px;
+    grid-template-areas: "name name" "amount unit" "sum remove";
+  }
+  .ing-line .i-name { grid-area: name; }
+  .ing-line .i-amount { grid-area: amount; }
+  .ing-line .i-unit { grid-area: unit; }
+  .ing-line .i-sum { grid-area: sum; }
+  .ing-line .i-actions { grid-area: remove; }
+  .kbju-panels { grid-template-columns: 1fr; }
+  .detail-grid { grid-template-columns: repeat(2, 1fr); }
+  .detail-grid.k { grid-template-columns: repeat(2, 1fr); }
+  .topbar-inner { padding: 12px 14px; }
+  .container { padding: 16px 14px 30px; }
+}
+
+/* ----- Анимации в духе Apple -----
+   Единая кривая ускорения: быстрый старт, долгое мягкое торможение. */
+:root {
+  --ease-apple: cubic-bezier(.32, .72, 0, 1);
+  --dur-view: .34s;  /* смена экрана */
+  --dur-in: .38s;    /* появление карточек */
+}
+
+@keyframes viewIn {
+  from { opacity: 0; transform: translateY(10px) scale(.995); }
+  to   { opacity: 1; transform: none; }
+}
+.view-enter { animation: viewIn var(--dur-view) var(--ease-apple) both; }
+
+@keyframes riseIn {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: none; }
+}
+/* каскад: --i задаётся из JS, задержка растёт на 45 мс на элемент */
+.view-in {
+  animation: riseIn var(--dur-in) var(--ease-apple) both;
+  animation-delay: calc(var(--i, 0) * 45ms);
+}
+
+/* «яблочные» нажатия: кнопка чуть приседает под пальцем/мышью */
+.btn:active, .nav-btn:active, .mode-btn:active, .brand:active { transform: scale(.96); }
+
+/* та же мягкая кривая у всех hover/focus-переходов */
+.btn, .nav-btn, .mode-btn, .brand, .search-input-row input,
+.ing-line input, .ing-line select, .field input, .field textarea, textarea#rSteps,
+.food-grid input, .servings-row input, .recipe-card, .dash-day-recipe, .dash-recent-row {
+  transition-timing-function: var(--ease-apple);
+}
+
+/* подсказки-списки выезжают сверху, не мелькают */
+.suggest-list { animation: riseIn .18s var(--ease-apple) both; }
+
+/* уважение к системной настройке «уменьшить движение» */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: .01ms !important;
+    transition-duration: .01ms !important;
+  }
+}
+
+/* ----- Печать ----- */
+@media print {
+  .topbar, .rv-actions, .recipe-back { display: none; }
+  .view-enter, .view-in { animation: none; }
+  body { background: #fff; }
+  .card, .kbju-box { box-shadow: none; border-color: #ccc; }
+}
+
+/* Скроллбары в пастельном стиле */
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--line); border-radius: 6px; }
+::-webkit-scrollbar-thumb:hover { background: var(--muted); }

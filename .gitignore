@@ -1,0 +1,6 @@
+# временные файлы ОС и редакторов
+Thumbs.db
+Desktop.ini
+*.log
+.vscode/
+.idea/

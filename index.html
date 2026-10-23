@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🍲</text></svg>">
+  <title>Кулинарная книга</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <button id="navHome" class="brand">
+        <span class="brand-mark">✿</span>
+        <h1>Кулинарная книга</h1>
+      </button>
+      <nav class="nav">
+        <button id="navList" class="nav-btn" data-view="list">📖 Рецепты</button>
+        <button id="navFoods" class="nav-btn" data-view="foods">🌿 Ингредиенты</button>
+        <button id="navNew" class="nav-btn" data-view="editor">✏️ Новый рецепт</button>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+
+    <!-- ===== Дашборд (главная) ===== -->
+    <section id="viewDashboard" hidden></section>
+
+    <!-- ===== Список / поиск ===== -->
+    <section id="viewList" hidden>
+      <div class="search-card">
+        <div class="mode-switch" id="modeSwitch">
+          <button class="mode-btn active" data-mode="name">По названию</button>
+          <button class="mode-btn" data-mode="ing">По ингредиентам</button>
+        </div>
+
+        <div class="search-input-row">
+          <input type="search" id="searchInput" placeholder="Например: кекс" autocomplete="off" inputmode="search">
+        </div>
+        <p class="hint" id="searchHint" hidden></p>
+      </div>
+
+      <div id="recipeGrid" class="grid"></div>
+      <div id="emptyState" class="empty" hidden>
+        <p class="empty-icon">❦</p>
+        <p>Ничего не найдено.<br>Попробуйте другой запрос или добавьте новый рецепт.</p>
+      </div>
+      <p id="dbError" class="error-text" hidden></p>
+    </section>
+
+    <!-- ===== Справочник ингредиентов ===== -->
+    <section id="viewFoods" hidden>
+      <div class="search-card">
+        <div class="foods-head">
+          <div class="search-input-row grow">
+            <input type="search" id="foodSearch" placeholder="Найти ингредиент" autocomplete="off">
+          </div>
+          <button id="foodAdd" class="btn primary no-shrink">＋ ингредиент</button>
+        </div>
+        <p class="hint" id="foodHint"></p>
+      </div>
+
+      <div id="foodForm" class="card food-form" hidden>
+        <h3 class="sub-title" id="foodFormTitle">Новый ингредиент</h3>
+        <div class="field">
+          <input id="fName" type="text" placeholder="Название ингредиента" maxlength="80">
+        </div>
+        <div class="food-grid">
+          <label>Ккал на 100 г<input id="fK" type="number" min="0" step="any"></label>
+          <label>Белки, г<input id="fP" type="number" min="0" step="any"></label>
+          <label>Жиры, г<input id="fF" type="number" min="0" step="any"></label>
+          <label>Углеводы, г<input id="fC" type="number" min="0" step="any"></label>
+        </div>
+        <div class="food-grid">
+          <label>г в ст. ложке<input id="fTbsp" type="number" min="0" step="any" placeholder="необязательно"></label>
+          <label>г в ч. ложке<input id="fTsp" type="number" min="0" step="any" placeholder="необязательно"></label>
+          <label>г в 1 шт.<input id="fPiece" type="number" min="0" step="any" placeholder="необязательно"></label>
+          <label>г/мл<input id="fD" type="number" min="0" step="any" placeholder="необязательно"></label>
+        </div>
+        <p id="foodError" class="error-text" hidden></p>
+        <div class="editor-actions">
+          <button id="foodSave" class="btn primary">Сохранить</button>
+          <button id="foodCancel" class="btn ghost">Отмена</button>
+        </div>
+      </div>
+
+      <div id="foodGrid" class="food-grid-list"></div>
+      <div id="foodEmpty" class="empty" hidden>
+        <p class="empty-icon">🌿</p>
+        <p>Ничего не найдено.<br>Добавьте свой ингредиент кнопкой «＋ ингредиент».</p>
+      </div>
+    </section>
+
+    <!-- ===== Редактор рецепта ===== -->
+    <section id="viewEditor" hidden>
+      <div class="editor-card card">
+        <div class="field">
+          <input id="rTitle" type="text" placeholder="Название блюда" maxlength="120">
+        </div>
+
+        <div class="field">
+          <textarea id="rDesc" rows="2" placeholder="Короткое описание (необязательно)"></textarea>
+        </div>
+
+        <h3 class="sub-title">Ингредиенты</h3>
+        <div class="ing-head">
+          <span class="col-name">Название</span>
+          <span class="col-amount">Кол-во</span>
+          <span class="col-unit">Единица</span>
+          <span class="col-sum">Расчёт</span>
+        </div>
+        <div id="ingRows"></div>
+        <button id="addIng" class="btn ghost add-ing">＋ добавить ингредиент</button>
+
+        <h3 class="sub-title">Шаг за шагом</h3>
+        <textarea id="rSteps" rows="6" placeholder="1) ..."></textarea>
+
+        <div class="servings-row">
+          <label for="rServings">Порций:</label>
+          <input id="rServings" type="number" min="1" step="0.5" value="1">
+        </div>
+
+        <div class="editor-actions">
+          <button id="saveRecipe" class="btn primary">Сохранить рецепт</button>
+          <button id="cancelEdit" class="btn ghost">Отмена</button>
+        </div>
+        <p id="saveError" class="error-text" hidden></p>
+      </div>
+    </section>
+
+    <!-- ===== Просмотр рецепта ===== -->
+    <section id="viewRecipe" hidden></section>
+
+    <!-- ===== Экран настройки облака (пока config.js не заполнен) ===== -->
+    <section id="setupOverlay" hidden>
+      <div class="card setup-card">
+        <p class="empty-icon">☁️</p>
+        <h2 class="sub-title">Подключите облако — это два шага</h2>
+        <ol class="setup-steps">
+          <li>Создайте бесплатный проект на <b>supabase.com</b>.</li>
+          <li>В «SQL Editor» вставьте текст файла <b>supabase-setup.sql</b> и нажмите <b>Run</b>.</li>
+          <li>В «Project Settings → API» скопируйте <b>Project URL</b> и ключ <b>anon public</b>.</li>
+          <li>Вставьте их в файл <b>config.js</b> рядом с сайтом и обновите страницу.</li>
+        </ol>
+        <p class="hint">Там же, в файле-инструкции README.md, это расписано подробнее.</p>
+      </div>
+    </section>
+
+  </main>
+
+
+  <script src="config.js"></script>
+  <script src="db.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
